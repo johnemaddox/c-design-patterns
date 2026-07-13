@@ -1,0 +1,50 @@
+{
+    // See https://go.microsoft.com/fwlink/?inkId=733558
+    // for the documentation about the tasks.Ljson format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "./build test ${input:exec}",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "focus": true
+            }
+        },
+        {
+            "label": "debug-build",
+            "type": "shell",
+            "command": "./build debug ${input:exec}",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "focus": true,
+            }
+        },
+        {
+            "label": "debug-close",
+            "detail": "Closes current open terminal windows",
+            "command": "${command:workbench.action.terminal.kill}"
+        }
+    ],
+    "inputs": [
+        {
+          "type": "pickString",
+          "id": "exec",
+          "description": "Which lib would you like to run?",
+          // options list is same as list in launch.json
+          "options": [
+            "interface",
+            "ring_buffer",
+            "state_machine"
+          ],
+          "default": "interface"
+        },
+    ]
+}
