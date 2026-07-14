@@ -1,43 +1,65 @@
 #include "gtest/gtest.h"
 extern "C" {
 #include "intf.h"
+#include "camera_hw.h"
+#include "camera_sim.h"
 }
 
 namespace
 {
 
-TEST(IntfSelect, FlagOk)
+TEST(IntfCreate, NullPtr)
 {
-    intf_t cam;
-    ASSERT_EQ(intf_select(&cam, INTF_CAM_ONE), INTF_OK);
+    ASSERT_EQ(camera_hw_create(nullptr), INTF_ERR);
+    ASSERT_EQ(camera_sim_create(nullptr), INTF_ERR);
 }
 
-TEST(IntfSelect, FlagErr)
+TEST(IntfCreate, Hardware)
 {
     intf_t cam;
-    // CAM_HW_THREE is added to cam_hw_t, but it has not been mapped in intf_select
-    ASSERT_EQ(intf_select(&cam, INTF_CAM_THREE), INTF_ERR);
+    ASSERT_EQ(camera_hw_create(&cam), INTF_OK);
+    EXPECT_NE(cam.ops, nullptr);
+    EXPECT_NE(cam.context, nullptr);
 }
 
-/* This test is the reason for using an interface. Hardware is being switched here
- * by using the intf_select() function.
-*/
+TEST(IntfCreate, Simulator)
+{
+    intf_t cam;
+    ASSERT_EQ(camera_sim_create(&cam), INTF_OK);
+    EXPECT_NE(cam.ops, nullptr);
+    EXPECT_NE(cam.context, nullptr);
+}
+
+TEST(IntfSafeWrappers, NullPtr)
+{
+    // Test wrapper null robustness
+    EXPECT_EQ(intf_init(nullptr).intf_flag, INTF_ERR);
+    EXPECT_EQ(intf_capture(nullptr, 5).intf_flag, INTF_ERR);
+    EXPECT_EQ(intf_start(nullptr).intf_flag, INTF_ERR);
+    EXPECT_EQ(intf_stop(nullptr).intf_flag, INTF_ERR);
+
+    // Test missing ops
+    intf_t empty_cam = { .ops = nullptr, .context = nullptr };
+    EXPECT_EQ(intf_init(&empty_cam).intf_flag, INTF_ERR);
+}
+
 TEST(IntfSelect, SwitchHW)
 {
     intf_t cam;
     intf_state_t state;
 
-    ASSERT_EQ(intf_select(&cam, INTF_CAM_ONE), INTF_OK);
-    state = cam.init();
+    // Test HW Cam
+    ASSERT_EQ(camera_hw_create(&cam), INTF_OK);
+    state = intf_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_ONE_INIT);
+    EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 
-    ASSERT_EQ(intf_select(&cam, INTF_CAM_TWO), INTF_OK);
-    state = cam.init();
+    // Test SIM Cam
+    ASSERT_EQ(camera_sim_create(&cam), INTF_OK);
+    state = intf_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_TWO_INIT);
+    EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 }
-
 
 class IntfFncs : public ::testing::Test
 {
@@ -48,38 +70,38 @@ class IntfFncs : public ::testing::Test
     private:
         void SetUp() override
         {
-            ASSERT_EQ(intf_select(&cam, INTF_CAM_ONE), INTF_OK);
+            ASSERT_EQ(camera_hw_create(&cam), INTF_OK);
         }
 };
 
 TEST_F(IntfFncs, Init)
 {
-    state = cam.init();
+    state = intf_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_ONE_INIT);
+    EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 }
 
 TEST_F(IntfFncs, Capture)
 {
-    size_t captures = 5;
-    state = cam.capture(captures);
+    uint32_t captures = 5;
+    state = intf_capture(&cam, captures);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_ONE_CAPTURE);
+    EXPECT_EQ(state.cam_state.flag, CAM_CAPTURE);
     EXPECT_EQ(state.cam_state.extra, captures);
 }
 
 TEST_F(IntfFncs, Start)
 {
-    state = cam.start();
+    state = intf_start(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_ONE_START);
+    EXPECT_EQ(state.cam_state.flag, CAM_START);
 }
 
 TEST_F(IntfFncs, Stop)
 {
-    state = cam.stop();
+    state = intf_stop(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
-    EXPECT_EQ(state.cam_state.flag, CAM_ONE_STOP);
+    EXPECT_EQ(state.cam_state.flag, CAM_STOP);
 }
 
 } // namespace

@@ -4,19 +4,30 @@
  *
  *  For easy switching between HW or simulated HW for testing.
  *
- *  - Add new HW in intf_type_t.
- *  - Add or modify interface functions in intf_t.
- *
  * @author John E Maddox
  *
- * @version 1.0.0
+ * @version 2.0.0
  *
-*************************************************************H*/
+ *************************************************************H*/
 
 #ifndef INTF_H
 #define INTF_H
 
-#include "camera.h"
+#include <stdint.h>
+
+typedef enum
+{
+    CAM_INIT,
+    CAM_CAPTURE,
+    CAM_START,
+    CAM_STOP
+} cam_flag_t;
+
+typedef struct
+{
+    cam_flag_t flag;
+    uint32_t   extra; // Payload / metadata associated with the event (e.g. number of captures)
+} cam_state_t;
 
 typedef enum
 {
@@ -24,29 +35,35 @@ typedef enum
     INTF_ERR
 } intf_flag_t;
 
-typedef enum
-{
-    INTF_CAM_ONE,
-    INTF_CAM_TWO,
-    INTF_CAM_THREE
-} intf_type_t;
-
-typedef struct 
+typedef struct
 {
     intf_flag_t intf_flag;
     cam_state_t cam_state;
 } intf_state_t;
 
-// This is a template for all of the interfaces.
+// Forward declare interface instance struct
+typedef struct intf_t intf_t;
+
+// Operations struct (stored in Flash/ROM by using the const keyword in intf_t below)
 typedef struct
 {
-    intf_state_t (*init)(void);
-    intf_state_t (*capture)(int num_of_captures);
-    intf_state_t (*start)(void);
-    intf_state_t (*stop)(void);
-} intf_t;
+    intf_state_t (*init)(intf_t *self);
+    intf_state_t (*capture)(intf_t *self, uint32_t num_of_captures);
+    intf_state_t (*start)(intf_t *self);
+    intf_state_t (*stop)(intf_t *self);
+} intf_ops_t;
 
-// set a cam_intf_h struct for the selected camera hardware.
-intf_flag_t intf_select(intf_t *p_intf, intf_type_t hw_type);
+// Interface instance struct (stored in RAM)
+struct intf_t
+{
+    const intf_ops_t *ops;
+    void             *context; // Pointer to driver-specific runtime state/context
+};
+
+// Safe interface wrappers to handle null checks centrally
+intf_state_t intf_init(intf_t *self);
+intf_state_t intf_capture(intf_t *self, uint32_t num_of_captures);
+intf_state_t intf_start(intf_t *self);
+intf_state_t intf_stop(intf_t *self);
 
 #endif // INTF_H
