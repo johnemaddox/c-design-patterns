@@ -1,5 +1,5 @@
 add_library(interface_lib STATIC
-    intf.c
+    camera_intf.c
     example/camera_hw.c
     example/camera_sim.c
 )

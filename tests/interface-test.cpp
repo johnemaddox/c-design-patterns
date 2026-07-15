@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 extern "C" {
-#include "intf.h"
+#include "camera_intf.h"
 #include "camera_hw.h"
 #include "camera_sim.h"
 }
@@ -33,30 +33,30 @@ TEST(IntfCreate, Simulator)
 TEST(IntfSafeWrappers, NullPtr)
 {
     // Test wrapper null robustness
-    EXPECT_EQ(intf_init(nullptr).intf_flag, INTF_ERR);
-    EXPECT_EQ(intf_capture(nullptr, 5).intf_flag, INTF_ERR);
-    EXPECT_EQ(intf_start(nullptr).intf_flag, INTF_ERR);
-    EXPECT_EQ(intf_stop(nullptr).intf_flag, INTF_ERR);
+    EXPECT_EQ(camera_init(nullptr).intf_flag, INTF_ERR);
+    EXPECT_EQ(camera_capture(nullptr, 5).intf_flag, INTF_ERR);
+    EXPECT_EQ(camera_start(nullptr).intf_flag, INTF_ERR);
+    EXPECT_EQ(camera_stop(nullptr).intf_flag, INTF_ERR);
 
     // Test missing ops
     intf_t empty_cam = { .ops = nullptr, .context = nullptr };
-    EXPECT_EQ(intf_init(&empty_cam).intf_flag, INTF_ERR);
+    EXPECT_EQ(camera_init(&empty_cam).intf_flag, INTF_ERR);
 }
 
 TEST(IntfSelect, SwitchHW)
 {
     intf_t cam;
-    intf_state_t state;
+    camera_state_t state;
 
     // Test HW Cam
     ASSERT_EQ(camera_hw_create(&cam), INTF_OK);
-    state = intf_init(&cam);
+    state = camera_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 
     // Test SIM Cam
     ASSERT_EQ(camera_sim_create(&cam), INTF_OK);
-    state = intf_init(&cam);
+    state = camera_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 }
@@ -64,8 +64,8 @@ TEST(IntfSelect, SwitchHW)
 class IntfFncs : public ::testing::Test
 {
     public:
-        intf_t       cam;
-        intf_state_t state;
+        intf_t         cam;
+        camera_state_t state;
 
     private:
         void SetUp() override
@@ -76,7 +76,7 @@ class IntfFncs : public ::testing::Test
 
 TEST_F(IntfFncs, Init)
 {
-    state = intf_init(&cam);
+    state = camera_init(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_INIT);
 }
@@ -84,7 +84,7 @@ TEST_F(IntfFncs, Init)
 TEST_F(IntfFncs, Capture)
 {
     uint32_t captures = 5;
-    state = intf_capture(&cam, captures);
+    state = camera_capture(&cam, captures);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_CAPTURE);
     EXPECT_EQ(state.cam_state.extra, captures);
@@ -92,14 +92,14 @@ TEST_F(IntfFncs, Capture)
 
 TEST_F(IntfFncs, Start)
 {
-    state = intf_start(&cam);
+    state = camera_start(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_START);
 }
 
 TEST_F(IntfFncs, Stop)
 {
-    state = intf_stop(&cam);
+    state = camera_stop(&cam);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_STOP);
 }

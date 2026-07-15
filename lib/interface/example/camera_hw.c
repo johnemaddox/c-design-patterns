@@ -12,42 +12,42 @@ static camera_hw_context_t hw_context_data = {
 };
 
 // Static callbacks implementing driver operations
-static intf_state_t hw_init(intf_t *self)
+static camera_state_t hw_init(intf_t *self)
 {
     (void)self;
-    intf_state_t rtn;
+    camera_state_t rtn;
     rtn.intf_flag      = INTF_OK;
     rtn.cam_state.flag = CAM_INIT;
     rtn.cam_state.extra = 0;
     return rtn;
 }
 
-static intf_state_t hw_capture(intf_t *self, uint32_t num_of_captures)
+static camera_state_t hw_capture(intf_t *self, uint32_t num_of_captures)
 {
     camera_hw_context_t *ctx = (camera_hw_context_t *)self->context;
     ctx->capture_count += num_of_captures;
 
-    intf_state_t rtn;
+    camera_state_t rtn;
     rtn.intf_flag       = INTF_OK;
     rtn.cam_state.flag  = CAM_CAPTURE;
     rtn.cam_state.extra = num_of_captures;
     return rtn;
 }
 
-static intf_state_t hw_start(intf_t *self)
+static camera_state_t hw_start(intf_t *self)
 {
     (void)self;
-    intf_state_t rtn;
+    camera_state_t rtn;
     rtn.intf_flag      = INTF_OK;
     rtn.cam_state.flag = CAM_START;
     rtn.cam_state.extra = 0;
     return rtn;
 }
 
-static intf_state_t hw_stop(intf_t *self)
+static camera_state_t hw_stop(intf_t *self)
 {
     (void)self;
-    intf_state_t rtn;
+    camera_state_t rtn;
     rtn.intf_flag      = INTF_OK;
     rtn.cam_state.flag = CAM_STOP;
     rtn.cam_state.extra = 0;
@@ -55,7 +55,7 @@ static intf_state_t hw_stop(intf_t *self)
 }
 
 // Ops Table (Flash / ROM)
-static const intf_ops_t cam_hw_ops = {
+static const camera_ops_t cam_hw_ops = {
     .init    = &hw_init,
     .capture = &hw_capture,
     .start   = &hw_start,
