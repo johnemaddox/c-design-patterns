@@ -22,6 +22,11 @@ make_debug()
     cmake --build "${build_dir}" -- all
 }
 
+make_clean()
+{
+    rm -rf out
+}
+
 if [ -z "${1+x}" ]; then
     usage
     exit 1
@@ -41,11 +46,13 @@ fi
 
 case "$1" in
     "test")
+        make_clean
         make_debug $2
         echo ">> Run $2 Test <<"
         ${build_dir}/bin/test.out
         ;;
     "debug")
+        make_clean
         make_debug $2
         ;;
     *)

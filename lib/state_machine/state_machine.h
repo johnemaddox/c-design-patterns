@@ -1,15 +1,30 @@
 /*H************************************************************
  *
- * Finite State Machine
+ * Finite State Machine (FSM)
  *
- *  The Finite State Machine is great for breaking down and
- *  managing complex tasks, such as a Stop Light System.
+ *  Provides a resource-efficient, generic finite state machine library.
+ *  Decoupled from application-specific states, allowing multiple
+ *  independent state machines to run concurrently.
+ *
+ *  To minimize RAM consumption in resource-constrained embedded systems:
+ *   - The state transition tables (sm_state_config_t) are declared const
+ *     to reside in Flash/ROM.
+ *   - The active state and context (sm_handle_t) reside in RAM.
+ *
+ *  Supports reentrancy and instanced operations by passing the handle
+ *  and user-defined context pointers back to event callback functions.
+ *
+ *  Usage Example:
+ *   1. Define states and event callbacks.
+ *   2. Declare a static const sm_state_config_t table[] in Flash.
+ *   3. Declare an sm_handle_t in RAM pointing to the table.
+ *   4. Run state transitions periodically by calling sm_run(&handle).
  *
  * @author John E Maddox
  *
- * @version 1.0.0
+ * @version 2.0.0
  *
-*************************************************************H*/
+ *************************************************************H*/
 
 #ifndef STATE_MACHINE_H
 #define STATE_MACHINE_H

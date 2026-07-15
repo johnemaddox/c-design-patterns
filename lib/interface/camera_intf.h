@@ -2,7 +2,17 @@
  *
  * Camera Interface
  *
- *  For easy switching cameras between HW or sim HW for testing.
+ *  A concrete camera device interface built on top of the generic 
+ *  hardware interface library (intf.h). Enables runtime switching
+ *  between physical camera hardware and simulation drivers.
+ *
+ *  Usage Example:
+ *   1. Declare an interface handle: intf_t my_camera;
+ *   2. Instantiate the driver (e.g. HW or SIM):
+ *      camera_hw_create(&my_camera);
+ *   3. Access operations through safe wrappers:
+ *      camera_state_t st = camera_init(&my_camera);
+ *      camera_capture(&my_camera, 5);
  *
  * @author John E Maddox
  *

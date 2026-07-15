@@ -40,11 +40,12 @@
           "description": "Which lib would you like to run?",
           // options list is same as list in launch.json
           "options": [
+            "callback",
             "interface",
             "ring_buffer",
             "state_machine"
           ],
-          "default": "interface"
+          "default": "callback"
         },
     ]
 }

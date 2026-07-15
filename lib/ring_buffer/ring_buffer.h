@@ -3,20 +3,25 @@
  * FiFo Ring Buffer
  *
  *  Performs basic FiFo operations for use in embedded systems.
- *  Maintains thread safe operations by using an empty buffer
- *  cell as a way to to prevent simultneous read and writes to
+ *  Maintains thread-safe operations by using an empty buffer
+ *  cell as a way to prevent simultaneous read and writes to
  *  the same buffer location. Each cell utilizes one byte.
  *
- *  Length is required to be a power of two, if it is not memory
- *  will not be allocated and RB_LEN_ERR will be returned. This
- *  will result in seg fault if the wrong size buffer is created
- *  and the flag is not checked.
+ *  Length is required to be a power of two. If it is not, the
+ *  initialization will fail and RB_LEN_ERR will be returned.
+ *  This library is completely heap-less, relying on caller-provided
+ *  static or stack memory buffers.
+ *
+ *  Supports two behavior modes when the buffer is full:
+ *   - STOP_ON_FULL: Rejects new writes and returns RB_FULL.
+ *   - OVERWRITE: Overwrites the oldest stored byte and advances
+ *     the tail index to accommodate new incoming data.
  *
  * @author John E Maddox
  *
- * @version 1.0.0
+ * @version 1.1.0
  *
-*************************************************************H*/
+ *************************************************************H*/
 
 #ifndef RING_BUFFER_H
 #define RING_BUFFER_H
