@@ -12,8 +12,8 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "externalConsole": false,
             "MIMode": "gdb",
+            "stopAtEntry": true,
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -21,8 +21,7 @@
                     "ignoreFailures": false
                 }
             ],
-            "preLaunchTask": "debug-build",
-            "postDebugTask": "debug-close"
+            "preLaunchTask": "Build Debug"
         }
     ]
   }

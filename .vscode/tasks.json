@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "test",
+            "label": "Build Tests",
             "type": "shell",
             "command": "./build test ${input:exec}",
             "group": {
@@ -16,7 +16,7 @@
             }
         },
         {
-            "label": "debug-build",
+            "label": "Build Debug",
             "type": "shell",
             "command": "./build debug ${input:exec}",
             "group": {
@@ -26,11 +26,6 @@
             "presentation": {
                 "focus": true,
             }
-        },
-        {
-            "label": "debug-close",
-            "detail": "Closes current open terminal windows",
-            "command": "${command:workbench.action.terminal.kill}"
         }
     ],
     "inputs": [
