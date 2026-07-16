@@ -42,7 +42,7 @@ case "$1" in
     "test")
         make_debug $2
         echo ">> Run $2 Test <<"
-        ${build_dir}/bin/test.out
+        ${build_dir}/bin/test
         ;;
     "debug")
         make_debug $2
