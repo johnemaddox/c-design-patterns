@@ -1,0 +1,28 @@
+---
+# Enable C-compatible static analysis and bug prevention check groups
+Checks: '
+  bugprone-*,
+  clang-analyzer-*,
+  misc-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  -modernize-*,
+  -clang-analyzer-cplusplus.*,
+  -readability-identifier-length
+'
+
+# Do not treat warnings as errors in editor mode by default
+WarningsAsErrors: ''
+
+# Check header files inside our source/include directory only
+HeaderFilterRegex: 'include/.*|src/.*'
+
+# Style checks naming conventions
+CheckOptions:
+  - key:             readability-identifier-naming.FunctionCase
+    value:           lower_case
+  - key:             readability-identifier-naming.VariableCase
+    value:           lower_case
+  - key:             readability-identifier-naming.ConstantCase
+    value:           UPPER_CASE

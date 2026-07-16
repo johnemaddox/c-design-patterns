@@ -76,10 +76,6 @@ Replace `<lib_dir>` with one of the directory names in `lib/` (e.g., `state_mach
 
 ## Requirements
 
-If you have GCC 11 and CMake 3.16+ installed locally, you can build and run tests directly on your host machine. Otherwise, you can use the VS Code Dev Container environment:
-
-- **Tools Required:**
-  - VS Code
-  - VS Code Dev Containers Extension
-  - Docker Desktop / Docker daemon
-- **Container Environment:** The environment automatically includes GCC, GDB, CMake, Make, and GoogleTest dependency downloads.
+* VScode
+    * Dev Containers Plugin
+* Docker

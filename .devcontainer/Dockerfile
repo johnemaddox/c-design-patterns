@@ -5,8 +5,13 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         gdb \
         cmake \
+        ninja-build \
         vim \
         sudo \
+        clang-tidy \
+        clang-format \
+        clangd \
+        git \
     && rm -rf /var/lib/apt/lists/*
 
 # https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user

@@ -1,8 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/alpine
 {
-	"name": "c11_lib",
+	"name": "c11_patterns",
 	"dockerFile": "Dockerfile",
+	"runArgs": [
+		"--privileged"
+	],
 	"mounts": [
 		"source=${localEnv:HOME}/.bash_history,target=/home/vscode/.bash_history,type=bind",
 		"source=${localEnv:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind"
@@ -10,7 +13,8 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"ms-vscode.cpptools"
+				"ms-vscode.cpptools",
+				"llvm-vs-code-extensions.vscode-clangd"
 			]
 		}
 	}
