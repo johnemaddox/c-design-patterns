@@ -1,6 +1,6 @@
 {
     // See https://go.microsoft.com/fwlink/?inkId=733558
-    // for the documentation about the tasks.Ljson format
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
@@ -18,13 +18,13 @@
         {
             "label": "Build Debug",
             "type": "shell",
-            "command": "./build debug ${input:exec}",
+            "command": "./build debug",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "presentation": {
-                "focus": true,
+                "focus": true
             }
         }
     ],
@@ -33,14 +33,13 @@
           "type": "pickString",
           "id": "exec",
           "description": "Which lib would you like to run?",
-          // options list is same as list in launch.json
+          // dynamically populated by update_vscode_configs() in ./build
           "options": [
             "callback",
             "interface",
             "ring_buffer",
             "state_machine"
-          ],
-          "default": "callback"
-        },
+          ]
+        }
     ]
 }

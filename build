@@ -7,11 +7,11 @@ lib_dir="lib"
 usage()
 {
     echo "
-    Commands: 
-        test [libdir]  - build & run gTest for specified library.
-        debug [libdir] - build & debug specified library.
+Commands: 
+    debug         - build all.
+    test [libdir] - build all & run gTest for specified library.
 
-        [libdir]       - one of the directories in lib/
+        [libdir]  - one of the directories in lib/
     "
 }
 
@@ -20,34 +20,59 @@ if [ -z "${1+x}" ]; then
     exit 1
 fi
 
-if [ -z "${2+x}" ]; then
-    usage
-    exit 1
-fi
-
-if [ ! -d "${lib_dir}/$2" ]; then
-    echo "=> ERROR: Library directory does not exist in ${lib_dir}/ <="
-    usage
-    exit 1
-fi
-
-make_debug()
+update_vscode_configs()
 {
-    echo ">> Building $1 <<"
-    cmake -G Ninja -S . -B "${build_dir}" -DMY_PROG="$1"
+    echo ">> Synchronizing libraries in VS Code configurations <<"
+    python3 -c "
+import os, re
+libs = sorted([f for f in os.listdir('lib') if os.path.isdir(os.path.join('lib', f))])
+formatted = '[\n' + ',\n'.join(f'            \"{lib}\"' for lib in libs) + '\n          ]'
+for p in ['.vscode/launch.json', '.vscode/tasks.json']:
+    if os.path.exists(p):
+        with open(p, 'r') as file:
+            content = file.read()
+        new_content = re.sub(r'\"options\":\s*\[[^\]]*\]', f'\"options\": {formatted}', content)
+        with open(p, 'w') as file:
+            file.write(new_content)
+"
+}
+
+make_all()
+{
+    update_vscode_configs
+    echo ">> Building all with debug flags <<"
+    # Clear the CMake cache file if it exists to ensure a clean configure
+    rm -f "${build_dir}/CMakeCache.txt"
+    cmake -G Ninja -S . -B "${build_dir}"
     cmake --build "${build_dir}" -- all
 }
 
+run_test()
+{
+    if [ -n "${1-}" ]; then
+        if [ ! -d "${lib_dir}/$1" ]; then
+            echo "=> ERROR: Library directory $1 does not exist in ${lib_dir}/ <="
+            usage
+            exit 1
+        fi
+        make_all
+        echo ">> Run $1 Test <<"
+        "${build_dir}/bin/$1"
+    else
+        usage
+        exit 1
+    fi
+}
+
 case "$1" in
-    "test")
-        make_debug $2
-        echo ">> Run $2 Test <<"
-        ${build_dir}/bin/test
-        ;;
     "debug")
-        make_debug $2
+        make_all
+        ;;
+    "test")
+        run_test "${2-}"
         ;;
     *)
         usage
+        exit 1
         ;;
 esac

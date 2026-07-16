@@ -13,11 +13,13 @@ if(CLANG_TIDY_EXE)
     )
 endif()
 
-add_executable(${MY_OUTPUT}
-    ${MY_PROG}-test.cpp
-)
-
-target_link_libraries(${MY_OUTPUT} PRIVATE
-    ${MY_PROG}_lib
-    gtest_main
-)
+# Dynamically add test executables if the test source file exists
+file(GLOB lib_subdirs RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/../lib ../lib/*)
+foreach(subdir ${lib_subdirs})
+    if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../lib/${subdir})
+        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}-test.cpp)
+            add_executable(${subdir} ${subdir}-test.cpp)
+            target_link_libraries(${subdir} PRIVATE ${subdir}_lib gtest_main)
+        endif()
+    endif()
+endforeach()

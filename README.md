@@ -67,7 +67,7 @@ A helper bash script `./build` is provided at the root directory to compile libr
 
 * **Compile with debug flags without running tests:**
   ```bash
-  ./build debug <lib_dir>
+  ./build debug
   ```
 
 Replace `<lib_dir>` with one of the directory names in `lib/` (e.g., `state_machine`, `interface`, `ring_buffer`, or `callback`).

@@ -8,12 +8,11 @@
             "name": "GDB",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/out/bin/test",
+            "program": "${workspaceFolder}/out/bin/${input:exec}",
             "args": [],
             "cwd": "${workspaceFolder}",
             "environment": [],
             "MIMode": "gdb",
-            "stopAtEntry": true,
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -23,5 +22,19 @@
             ],
             "preLaunchTask": "Build Debug"
         }
+    ],
+    "inputs": [
+        {
+          "type": "pickString",
+          "id": "exec",
+          "description": "Which lib would you like to run?",
+          // dynamically populated by update_vscode_configs() in ./build
+          "options": [
+            "callback",
+            "interface",
+            "ring_buffer",
+            "state_machine"
+          ]
+        },
     ]
   }

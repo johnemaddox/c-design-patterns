@@ -10,9 +10,6 @@ endif()
 
 project(common LANGUAGES C CXX)
 
-set(LIB_DIR lib)
-set(MY_OUTPUT "test")
-
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 14)
 
@@ -24,7 +21,12 @@ set(CMAKE_BUILD_TYPE Debug)
 
 add_compile_options(-Wall -Werror -Wextra)
 
-message(STATUS "Building ${MY_PROG} in ${MY_OUTPUT}")
+# Dynamically find and add all subdirectories in lib/
+file(GLOB lib_subdirs RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/lib lib/*)
+foreach(subdir ${lib_subdirs})
+    if(IS_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/lib/${subdir})
+        add_subdirectory(lib/${subdir})
+    endif()
+endforeach()
 
-add_subdirectory(${LIB_DIR}/${MY_PROG})
 add_subdirectory(tests)
