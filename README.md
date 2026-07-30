@@ -45,7 +45,7 @@ These examples all adhere to the following rules:
 
 ## Build & Test Instructions
 
-A helper bash script `./build` is provided at the root directory to compile libraries and run their respective unit tests.
+A helper bash script `./build` is provided at the root directory to compile libraries and run their respective unit tests. Run without arguments for help.
 
 
 ## Requirements
