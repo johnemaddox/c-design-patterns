@@ -9,8 +9,8 @@
  *
  *  Length is required to be a power of two. If it is not, the
  *  initialization will fail and RB_LEN_ERR will be returned.
- *  This library is completely heap-less, relying on caller-provided
- *  static or stack memory buffers.
+ *  This library is completely heap-less, relying on caller
+ *  provided static or stack memory buffers.
  *
  *  Supports two behavior modes when the buffer is full:
  *   - STOP_ON_FULL: Rejects new writes and returns RB_FULL.
@@ -33,7 +33,7 @@ typedef enum
 {
     RB_OK,
     RB_LEN_ERR,
-    RB_PVAL_ERR,
+    RB_NULLPTR_ERR,
     RB_EMPTY,
     RB_FULL
 } rb_status_t;

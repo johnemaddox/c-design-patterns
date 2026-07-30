@@ -20,6 +20,37 @@ TEST(RingBufferInit, FlagLenSize)
     ASSERT_EQ(rb_init(&rb, buf, 9, RB_TYPE_STOP_ON_FULL), RB_LEN_ERR);
 }
 
+TEST(RingBufferNullPtr, Init)
+{
+    rb_handle_t rb;
+    uint8_t buf[8];
+    EXPECT_EQ(rb_init(nullptr, buf, 8, RB_TYPE_STOP_ON_FULL), RB_NULLPTR_ERR);
+    EXPECT_EQ(rb_init(&rb, nullptr, 8, RB_TYPE_STOP_ON_FULL), RB_NULLPTR_ERR);
+}
+
+TEST(RingBufferNullPtr, Put)
+{
+    rb_handle_t rb;
+    EXPECT_EQ(rb_put(nullptr, 0xAA), RB_NULLPTR_ERR);
+    
+    rb.data = nullptr;
+    EXPECT_EQ(rb_put(&rb, 0xAA), RB_NULLPTR_ERR);
+}
+
+TEST(RingBufferNullPtr, Get)
+{
+    rb_handle_t rb;
+    uint8_t val;
+    EXPECT_EQ(rb_get(nullptr, &val), RB_NULLPTR_ERR);
+    
+    rb.data = nullptr;
+    EXPECT_EQ(rb_get(&rb, &val), RB_NULLPTR_ERR);
+    
+    uint8_t buf[8];
+    rb.data = buf;
+    EXPECT_EQ(rb_get(&rb, nullptr), RB_NULLPTR_ERR);
+}
+
 TEST(RingBufferOverwrite, CycleBuffer)
 {
     rb_handle_t rb;
