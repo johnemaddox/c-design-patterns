@@ -1,7 +1,7 @@
-#include "callback.h"
+#include "observer.h"
 #include <stddef.h>
 
-void cb_subject_init(cb_subject_t *subject)
+void obs_subject_init(obs_subject_t *subject)
 {
     if (subject != NULL)
     {
@@ -9,7 +9,7 @@ void cb_subject_init(cb_subject_t *subject)
     }
 }
 
-bool cb_subject_register(cb_subject_t *subject, cb_observer_t *observer)
+bool obs_subject_register(obs_subject_t *subject, obs_observer_t *observer)
 {
     if (subject == NULL || observer == NULL || observer->callback == NULL)
     {
@@ -17,7 +17,7 @@ bool cb_subject_register(cb_subject_t *subject, cb_observer_t *observer)
     }
 
     // Prevent duplicate registration
-    cb_observer_t *curr = subject->head;
+    obs_observer_t *curr = subject->head;
     while (curr != NULL)
     {
         if (curr == observer)
@@ -34,15 +34,15 @@ bool cb_subject_register(cb_subject_t *subject, cb_observer_t *observer)
     return true;
 }
 
-bool cb_subject_unregister(cb_subject_t *subject, cb_observer_t *observer)
+bool obs_subject_unregister(obs_subject_t *subject, obs_observer_t *observer)
 {
     if (subject == NULL || observer == NULL)
     {
         return false;
     }
 
-    cb_observer_t *curr = subject->head;
-    cb_observer_t *prev = NULL;
+    obs_observer_t *curr = subject->head;
+    obs_observer_t *prev = NULL;
 
     while (curr != NULL)
     {
@@ -66,14 +66,14 @@ bool cb_subject_unregister(cb_subject_t *subject, cb_observer_t *observer)
     return false; // Not registered
 }
 
-void cb_subject_notify(cb_subject_t *subject, const void *event_data)
+void obs_subject_notify(obs_subject_t *subject, const void *event_data)
 {
     if (subject == NULL)
     {
         return;
     }
 
-    cb_observer_t *curr = subject->head;
+    obs_observer_t *curr = subject->head;
     while (curr != NULL)
     {
         if (curr->callback != NULL)

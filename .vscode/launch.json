@@ -5,22 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "GDB",
-            "type": "cppdbg",
+            "name": "LLDB",
+            "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/out/bin/${input:exec}",
+            "program": "${workspaceFolder}/out/tests/${input:exec}",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "environment": [],
-            "MIMode": "gdb",
-            "setupCommands": [
-                {
-                    "description": "Enable pretty-printing for gdb",
-                    "text": "-enable-pretty-printing",
-                    "ignoreFailures": false
-                }
-            ],
-            "preLaunchTask": "Build Debug"
+            "preLaunchTask": "Build All"
         }
     ],
     "inputs": [
@@ -30,11 +21,11 @@
           "description": "Which lib would you like to run?",
           // dynamically populated by update_vscode_configs() in ./build
           "options": [
-            "callback",
             "interface",
+            "observer",
             "ring_buffer",
             "state_machine"
           ]
-        },
+        }
     ]
   }

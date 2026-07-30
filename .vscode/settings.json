@@ -1,0 +1,14 @@
+{
+    // Configure Clangd
+    "clangd.arguments": [
+        // Point to merged compile_commands.json in out/ base directory
+        "--compile-commands-dir=${workspaceFolder}/out",
+        // Query Clang toolchain
+        "--query-driver=/usr/bin/clang",
+        "--background-index",
+        "--clang-tidy",
+        "-log=verbose"
+    ],
+    // Automatically restart clangd if build files change
+    "clangd.detectExtensionConflicts": true
+}

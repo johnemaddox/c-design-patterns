@@ -83,7 +83,7 @@ TEST_F(IntfFncs, Init)
 
 TEST_F(IntfFncs, Capture)
 {
-    uint32_t captures = 5;
+    const uint32_t captures = 5;
     state = camera_capture(&cam, captures);
     EXPECT_EQ(state.intf_flag, INTF_OK);
     EXPECT_EQ(state.cam_state.flag, CAM_CAPTURE);

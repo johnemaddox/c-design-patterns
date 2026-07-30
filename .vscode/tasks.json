@@ -16,9 +16,9 @@
             }
         },
         {
-            "label": "Build Debug",
+            "label": "Build All",
             "type": "shell",
-            "command": "./build debug",
+            "command": "./build all",
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -35,8 +35,8 @@
           "description": "Which lib would you like to run?",
           // dynamically populated by update_vscode_configs() in ./build
           "options": [
-            "callback",
             "interface",
+            "observer",
             "ring_buffer",
             "state_machine"
           ]

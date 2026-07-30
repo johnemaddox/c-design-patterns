@@ -1,18 +1,18 @@
 ---
-# Enable C-compatible static analysis and bug prevention check groups
 # https://clang.llvm.org/extra/clang-tidy/checks/list.html
 Checks: '
   bugprone-*,
+  -bugprone-easily-swappable-parameters,
   clang-analyzer-*,
   misc-*,
+  -misc-include-cleaner,
+  -misc-non-private-member-variables-in-classes,
   performance-*,
+  -performance-enum-size,
   portability-*,
   -readability-*,
   -modernize-*,
 '
 
-# Do not treat warnings as errors in editor mode by default
-WarningsAsErrors: ''
-
 # Check header files inside our source/include directory only
-HeaderFilterRegex: 'include/.*|src/.*'
+HeaderFilterRegex: 'lib/.*|tests/.*'
