@@ -4,6 +4,6 @@
 #include "sensor_intf.h"
 
 // Inject operations and context for simulated sensor hardware
-intf_flag_t sensor_sim_create(intf_t *self);
+intf_flag_t sensor_sim_create(intf_handle_t *self);
 
 #endif // SENSOR_SIM_H

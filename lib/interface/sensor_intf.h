@@ -7,7 +7,7 @@
  *  between physical sensor hardware and simulation drivers.
  *
  *  Usage Example:
- *   1. Declare an interface handle: intf_t my_sensor;
+ *   1. Declare an interface handle: intf_handle_t my_sensor;
  *   2. Instantiate the driver (e.g. HW or SIM):
  *      sensor_hw_create(&my_sensor);
  *   3. Access operations through safe wrappers:
@@ -50,18 +50,18 @@ typedef struct
 // Sensor operations struct
 typedef struct
 {
-    sensor_state_t (*init)(intf_t *self);
-    sensor_state_t (*read)(intf_t *self, float *value);
-    sensor_state_t (*calibrate)(intf_t *self);
-    sensor_state_t (*enable)(intf_t *self);
-    sensor_state_t (*disable)(intf_t *self);
+    sensor_state_t (*init)(intf_handle_t *self);
+    sensor_state_t (*read)(intf_handle_t *self, float *value);
+    sensor_state_t (*calibrate)(intf_handle_t *self);
+    sensor_state_t (*enable)(intf_handle_t *self);
+    sensor_state_t (*disable)(intf_handle_t *self);
 } sensor_ops_t;
 
 // Safe interface wrappers to handle null checks centrally
-sensor_state_t sensor_init(intf_t *self);
-sensor_state_t sensor_read(intf_t *self, float *value);
-sensor_state_t sensor_calibrate(intf_t *self);
-sensor_state_t sensor_enable(intf_t *self);
-sensor_state_t sensor_disable(intf_t *self);
+sensor_state_t sensor_init(intf_handle_t *self);
+sensor_state_t sensor_read(intf_handle_t *self, float *value);
+sensor_state_t sensor_calibrate(intf_handle_t *self);
+sensor_state_t sensor_enable(intf_handle_t *self);
+sensor_state_t sensor_disable(intf_handle_t *self);
 
 #endif // SENSOR_INTF_H

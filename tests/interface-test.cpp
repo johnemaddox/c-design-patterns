@@ -19,7 +19,7 @@ TEST(IntfCreate, NullPtr)
 
 TEST(IntfCreate, Hardware)
 {
-    intf_t cam;
+    intf_handle_t cam;
     ASSERT_EQ(camera_hw_create(&cam), INTF_OK);
     EXPECT_NE(cam.ops, nullptr);
     EXPECT_NE(cam.context, nullptr);
@@ -27,7 +27,7 @@ TEST(IntfCreate, Hardware)
 
 TEST(IntfCreate, Simulator)
 {
-    intf_t cam;
+    intf_handle_t cam;
     ASSERT_EQ(camera_sim_create(&cam), INTF_OK);
     EXPECT_NE(cam.ops, nullptr);
     EXPECT_NE(cam.context, nullptr);
@@ -42,13 +42,13 @@ TEST(IntfSafeWrappers, NullPtr)
     EXPECT_EQ(camera_stop(nullptr).intf_flag, INTF_ERR);
 
     // Test missing ops
-    intf_t empty_cam = { .ops = nullptr, .context = nullptr };
+    intf_handle_t empty_cam = { .ops = nullptr, .context = nullptr };
     EXPECT_EQ(camera_init(&empty_cam).intf_flag, INTF_ERR);
 }
 
 TEST(IntfSelect, SwitchHW)
 {
-    intf_t cam;
+    intf_handle_t cam;
     camera_state_t state;
 
     // Test HW Cam
@@ -67,7 +67,7 @@ TEST(IntfSelect, SwitchHW)
 class IntfFncs : public ::testing::Test
 {
     public:
-        intf_t         cam;
+        intf_handle_t  cam;
         camera_state_t state;
 
     private:
@@ -115,7 +115,7 @@ TEST(SensorIntfCreate, NullPtr)
 
 TEST(SensorIntfCreate, Hardware)
 {
-    intf_t sens;
+    intf_handle_t sens;
     ASSERT_EQ(sensor_hw_create(&sens), INTF_OK);
     EXPECT_NE(sens.ops, nullptr);
     EXPECT_NE(sens.context, nullptr);
@@ -123,7 +123,7 @@ TEST(SensorIntfCreate, Hardware)
 
 TEST(SensorIntfCreate, Simulator)
 {
-    intf_t sens;
+    intf_handle_t sens;
     ASSERT_EQ(sensor_sim_create(&sens), INTF_OK);
     EXPECT_NE(sens.ops, nullptr);
     EXPECT_NE(sens.context, nullptr);
@@ -138,7 +138,7 @@ TEST(SensorIntfSafeWrappers, NullPtr)
     EXPECT_EQ(sensor_enable(nullptr).intf_flag, INTF_ERR);
     EXPECT_EQ(sensor_disable(nullptr).intf_flag, INTF_ERR);
 
-    intf_t empty_sens = { .ops = nullptr, .context = nullptr };
+    intf_handle_t empty_sens = { .ops = nullptr, .context = nullptr };
     EXPECT_EQ(sensor_init(&empty_sens).intf_flag, INTF_ERR);
     EXPECT_EQ(sensor_read(&empty_sens, &val).intf_flag, INTF_ERR);
     EXPECT_EQ(sensor_calibrate(&empty_sens).intf_flag, INTF_ERR);
@@ -148,7 +148,7 @@ TEST(SensorIntfSafeWrappers, NullPtr)
 
 TEST(SensorIntfSelect, SwitchHW)
 {
-    intf_t sens;
+    intf_handle_t sens;
     sensor_state_t state;
 
     // Test HW Sensor
@@ -167,7 +167,7 @@ TEST(SensorIntfSelect, SwitchHW)
 class SensorIntfFncs : public ::testing::Test
 {
     public:
-        intf_t         sens;
+        intf_handle_t  sens;
         sensor_state_t state;
 
     private:

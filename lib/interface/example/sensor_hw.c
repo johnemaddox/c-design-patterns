@@ -16,7 +16,7 @@ static sensor_hw_context_t hw_context_data = {
 };
 
 // Static callbacks implementing driver operations
-static sensor_state_t hw_init(intf_t *self)
+static sensor_state_t hw_init(intf_handle_t *self)
 {
     (void)self;
     sensor_state_t rtn;
@@ -26,7 +26,7 @@ static sensor_state_t hw_init(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t hw_read(intf_t *self, float *value)
+static sensor_state_t hw_read(intf_handle_t *self, float *value)
 {
     sensor_hw_context_t *ctx = (sensor_hw_context_t *)self->context;
     sensor_state_t rtn;
@@ -52,7 +52,7 @@ static sensor_state_t hw_read(intf_t *self, float *value)
     return rtn;
 }
 
-static sensor_state_t hw_calibrate(intf_t *self)
+static sensor_state_t hw_calibrate(intf_handle_t *self)
 {
     sensor_hw_context_t *ctx = (sensor_hw_context_t *)self->context;
     ctx->last_value = 25.0f;
@@ -64,7 +64,7 @@ static sensor_state_t hw_calibrate(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t hw_enable(intf_t *self)
+static sensor_state_t hw_enable(intf_handle_t *self)
 {
     sensor_hw_context_t *ctx = (sensor_hw_context_t *)self->context;
     ctx->enabled = 1;
@@ -76,7 +76,7 @@ static sensor_state_t hw_enable(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t hw_disable(intf_t *self)
+static sensor_state_t hw_disable(intf_handle_t *self)
 {
     sensor_hw_context_t *ctx = (sensor_hw_context_t *)self->context;
     ctx->enabled = 0;
@@ -97,7 +97,7 @@ static const sensor_ops_t sens_hw_ops = {
     .disable   = &hw_disable
 };
 
-intf_flag_t sensor_hw_create(intf_t *self)
+intf_flag_t sensor_hw_create(intf_handle_t *self)
 {
     if (self == NULL)
     {

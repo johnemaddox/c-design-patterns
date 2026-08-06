@@ -7,8 +7,8 @@
 		"--privileged"
 	],
 	"mounts": [
-		"source=${localEnv:HOME}/.bash_history,target=/home/ubuntu/.bash_history,type=bind",
-		"source=${localEnv:HOME}/.bash_aliases,target=/home/ubuntu/.bash_aliases,type=bind"
+		"source=${localEnv:HOME}/.bash_history,target=/home/vscode/.bash_history,type=bind",
+		"source=${localEnv:HOME}/.bash_aliases,target=/home/vscode/.bash_aliases,type=bind"
 	],
 	"customizations": {
 		"vscode": {

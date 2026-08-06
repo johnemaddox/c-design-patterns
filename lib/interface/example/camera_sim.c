@@ -13,7 +13,7 @@ static camera_sim_context_t sim_context_data = {
 };
 
 // Static callbacks
-static camera_state_t sim_init(intf_t *self)
+static camera_state_t sim_init(intf_handle_t *self)
 {
     camera_sim_context_t *ctx = (camera_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -25,7 +25,7 @@ static camera_state_t sim_init(intf_t *self)
     return rtn;
 }
 
-static camera_state_t sim_capture(intf_t *self, uint32_t num_of_captures)
+static camera_state_t sim_capture(intf_handle_t *self, uint32_t num_of_captures)
 {
     camera_sim_context_t *ctx = (camera_sim_context_t *)self->context;
     ctx->capture_count += num_of_captures;
@@ -38,7 +38,7 @@ static camera_state_t sim_capture(intf_t *self, uint32_t num_of_captures)
     return rtn;
 }
 
-static camera_state_t sim_start(intf_t *self)
+static camera_state_t sim_start(intf_handle_t *self)
 {
     camera_sim_context_t *ctx = (camera_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -50,7 +50,7 @@ static camera_state_t sim_start(intf_t *self)
     return rtn;
 }
 
-static camera_state_t sim_stop(intf_t *self)
+static camera_state_t sim_stop(intf_handle_t *self)
 {
     camera_sim_context_t *ctx = (camera_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -70,7 +70,7 @@ static const camera_ops_t cam_sim_ops = {
     .stop    = &sim_stop
 };
 
-intf_flag_t camera_sim_create(intf_t *self)
+intf_flag_t camera_sim_create(intf_handle_t *self)
 {
     if (self == NULL)
     {

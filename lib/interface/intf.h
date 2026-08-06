@@ -34,10 +34,10 @@ typedef enum
     INTF_ERR
 } intf_flag_t;
 
-typedef struct intf_t
+typedef struct intf_handle_t
 {
     const void *ops;
     void       *context; // Pointer to driver-specific runtime state/context
-} intf_t;
+} intf_handle_t;
 
 #endif // INTF_H

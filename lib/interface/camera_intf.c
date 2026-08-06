@@ -1,7 +1,7 @@
 #include "camera_intf.h"
 #include <stddef.h>
 
-camera_state_t camera_init(intf_t *self)
+camera_state_t camera_init(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -17,7 +17,7 @@ camera_state_t camera_init(intf_t *self)
     return ops->init(self);
 }
 
-camera_state_t camera_capture(intf_t *self, uint32_t num_of_captures)
+camera_state_t camera_capture(intf_handle_t *self, uint32_t num_of_captures)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -33,7 +33,7 @@ camera_state_t camera_capture(intf_t *self, uint32_t num_of_captures)
     return ops->capture(self, num_of_captures);
 }
 
-camera_state_t camera_start(intf_t *self)
+camera_state_t camera_start(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -49,7 +49,7 @@ camera_state_t camera_start(intf_t *self)
     return ops->start(self);
 }
 
-camera_state_t camera_stop(intf_t *self)
+camera_state_t camera_stop(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {

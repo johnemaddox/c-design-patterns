@@ -12,7 +12,7 @@ static camera_hw_context_t hw_context_data = {
 };
 
 // Static callbacks implementing driver operations
-static camera_state_t hw_init(intf_t *self)
+static camera_state_t hw_init(intf_handle_t *self)
 {
     (void)self;
     camera_state_t rtn;
@@ -22,7 +22,7 @@ static camera_state_t hw_init(intf_t *self)
     return rtn;
 }
 
-static camera_state_t hw_capture(intf_t *self, uint32_t num_of_captures)
+static camera_state_t hw_capture(intf_handle_t *self, uint32_t num_of_captures)
 {
     camera_hw_context_t *ctx = (camera_hw_context_t *)self->context;
     ctx->capture_count += num_of_captures;
@@ -34,7 +34,7 @@ static camera_state_t hw_capture(intf_t *self, uint32_t num_of_captures)
     return rtn;
 }
 
-static camera_state_t hw_start(intf_t *self)
+static camera_state_t hw_start(intf_handle_t *self)
 {
     (void)self;
     camera_state_t rtn;
@@ -44,7 +44,7 @@ static camera_state_t hw_start(intf_t *self)
     return rtn;
 }
 
-static camera_state_t hw_stop(intf_t *self)
+static camera_state_t hw_stop(intf_handle_t *self)
 {
     (void)self;
     camera_state_t rtn;
@@ -62,7 +62,7 @@ static const camera_ops_t cam_hw_ops = {
     .stop    = &hw_stop
 };
 
-intf_flag_t camera_hw_create(intf_t *self)
+intf_flag_t camera_hw_create(intf_handle_t *self)
 {
     if (self == NULL)
     {

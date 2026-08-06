@@ -15,7 +15,7 @@ static sensor_sim_context_t sim_context_data = {
 };
 
 // Static callbacks
-static sensor_state_t sim_init(intf_t *self)
+static sensor_state_t sim_init(intf_handle_t *self)
 {
     sensor_sim_context_t *ctx = (sensor_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -27,7 +27,7 @@ static sensor_state_t sim_init(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t sim_read(intf_t *self, float *value)
+static sensor_state_t sim_read(intf_handle_t *self, float *value)
 {
     sensor_sim_context_t *ctx = (sensor_sim_context_t *)self->context;
     sensor_state_t rtn;
@@ -52,7 +52,7 @@ static sensor_state_t sim_read(intf_t *self, float *value)
     return rtn;
 }
 
-static sensor_state_t sim_calibrate(intf_t *self)
+static sensor_state_t sim_calibrate(intf_handle_t *self)
 {
     sensor_sim_context_t *ctx = (sensor_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -65,7 +65,7 @@ static sensor_state_t sim_calibrate(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t sim_enable(intf_t *self)
+static sensor_state_t sim_enable(intf_handle_t *self)
 {
     sensor_sim_context_t *ctx = (sensor_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -78,7 +78,7 @@ static sensor_state_t sim_enable(intf_t *self)
     return rtn;
 }
 
-static sensor_state_t sim_disable(intf_t *self)
+static sensor_state_t sim_disable(intf_handle_t *self)
 {
     sensor_sim_context_t *ctx = (sensor_sim_context_t *)self->context;
     ctx->sim_events++;
@@ -100,7 +100,7 @@ static const sensor_ops_t sens_sim_ops = {
     .disable   = &sim_disable
 };
 
-intf_flag_t sensor_sim_create(intf_t *self)
+intf_flag_t sensor_sim_create(intf_handle_t *self)
 {
     if (self == NULL)
     {

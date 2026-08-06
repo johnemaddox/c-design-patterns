@@ -12,9 +12,9 @@ static inline size_t update_idx(size_t idx, size_t max_len)
     return (idx + 1) & (max_len - 1);
 }
 
-rb_status_t rb_init(rb_handle_t *rb, uint8_t *data_buf, size_t max_len, rb_type_t type)
+rb_status_t rb_init(rb_handle_t *self, uint8_t *data_buf, size_t max_len, rb_type_t type)
 {
-    if (rb == NULL || data_buf == NULL)
+    if (self == NULL || data_buf == NULL)
     {
         return RB_NULLPTR_ERR;
     }
@@ -24,29 +24,29 @@ rb_status_t rb_init(rb_handle_t *rb, uint8_t *data_buf, size_t max_len, rb_type_
         return RB_LEN_ERR;
     }
 
-    rb->data = data_buf;
-    rb->max_len = max_len;
-    rb->type = type;
+    self->data = data_buf;
+    self->max_len = max_len;
+    self->type = type;
     
-    rb_reset(rb);
+    rb_reset(self);
 
     return RB_OK;
 }
 
-rb_status_t rb_put(rb_handle_t *rb, uint8_t data_in)
+rb_status_t rb_put(rb_handle_t *self, uint8_t data_in)
 {
-    if (rb == NULL || rb->data == NULL)
+    if (self == NULL || self->data == NULL)
     {
         return RB_NULLPTR_ERR;
     }
 
-    size_t next_idx = update_idx(rb->head_idx, rb->max_len);
+    size_t next_idx = update_idx(self->head_idx, self->max_len);
 
-    if (next_idx == rb->tail_idx)
+    if (next_idx == self->tail_idx)
     {
-        if (rb->type == RB_TYPE_OVERWRITE)
+        if (self->type == RB_TYPE_OVERWRITE)
         {
-            rb->tail_idx = update_idx(rb->tail_idx, rb->max_len);
+            self->tail_idx = update_idx(self->tail_idx, self->max_len);
         }
         else
         {
@@ -54,35 +54,53 @@ rb_status_t rb_put(rb_handle_t *rb, uint8_t data_in)
         }
     }
 
-    rb->data[rb->head_idx] = data_in;
-    rb->head_idx = next_idx;
+    self->data[self->head_idx] = data_in;
+    self->head_idx = next_idx;
 
     return RB_OK;
 }
 
-rb_status_t rb_get(rb_handle_t *rb, uint8_t *data_out)
+rb_status_t rb_get(rb_handle_t *self, uint8_t *data_out)
 {
-    if (rb == NULL || rb->data == NULL || data_out == NULL)
+    if (self == NULL || self->data == NULL || data_out == NULL)
     {
         return RB_NULLPTR_ERR;
     }
 
-    if (rb->head_idx == rb->tail_idx)
+    if (self->head_idx == self->tail_idx)
     {
         return RB_EMPTY;
     }
 
-    *data_out = rb->data[rb->tail_idx];
-    rb->tail_idx = update_idx(rb->tail_idx, rb->max_len);
+    *data_out = self->data[self->tail_idx];
+    self->tail_idx = update_idx(self->tail_idx, self->max_len);
 
     return RB_OK;
 }
 
-void rb_reset(rb_handle_t *rb)
+size_t rb_occupied(const rb_handle_t *self)
 {
-    if (rb != NULL)
+    if (self == NULL || self->data == NULL)
     {
-        rb->head_idx = 0;
-        rb->tail_idx = 0;
+        return 0;
+    }
+    return (self->head_idx - self->tail_idx) & (self->max_len - 1);
+}
+
+size_t rb_available(const rb_handle_t *self)
+{
+    if (self == NULL || self->data == NULL)
+    {
+        return 0;
+    }
+    return (self->max_len - 1) - rb_occupied(self);
+}
+
+void rb_reset(rb_handle_t *self)
+{
+    if (self != NULL)
+    {
+        self->head_idx = 0;
+        self->tail_idx = 0;
     }
 }

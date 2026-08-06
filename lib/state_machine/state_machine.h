@@ -40,7 +40,7 @@ typedef struct sm_handle_t sm_handle_t;
 // State configuration  (stored in Flash/ROM by using the const keyword in sm_handle_t below)
 typedef struct
 {
-    sm_state_t (*event)(sm_handle_t *smh, void *context);
+    sm_state_t (*event)(sm_handle_t *self, void *context);
     sm_state_t next_state;
 } sm_state_config_t;
 
@@ -53,6 +53,6 @@ struct sm_handle_t
     void *context;
 };
 
-sm_state_t sm_run(sm_handle_t *smh);
+sm_state_t sm_run(sm_handle_t *self);
 
 #endif // STATE_MACHINE_H

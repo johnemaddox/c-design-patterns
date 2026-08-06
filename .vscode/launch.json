@@ -21,8 +21,10 @@
           "description": "Which lib would you like to run?",
           // dynamically populated by update_vscode_configs() in ./build
           "options": [
+            "callback",
+            "callback_queue",
+            "callback_table",
             "interface",
-            "observer",
             "ring_buffer",
             "state_machine"
           ]

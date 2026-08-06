@@ -1,7 +1,7 @@
 #include "sensor_intf.h"
 #include <stddef.h>
 
-sensor_state_t sensor_init(intf_t *self)
+sensor_state_t sensor_init(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -17,7 +17,7 @@ sensor_state_t sensor_init(intf_t *self)
     return ops->init(self);
 }
 
-sensor_state_t sensor_read(intf_t *self, float *value)
+sensor_state_t sensor_read(intf_handle_t *self, float *value)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -33,7 +33,7 @@ sensor_state_t sensor_read(intf_t *self, float *value)
     return ops->read(self, value);
 }
 
-sensor_state_t sensor_calibrate(intf_t *self)
+sensor_state_t sensor_calibrate(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -49,7 +49,7 @@ sensor_state_t sensor_calibrate(intf_t *self)
     return ops->calibrate(self);
 }
 
-sensor_state_t sensor_enable(intf_t *self)
+sensor_state_t sensor_enable(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {
@@ -65,7 +65,7 @@ sensor_state_t sensor_enable(intf_t *self)
     return ops->enable(self);
 }
 
-sensor_state_t sensor_disable(intf_t *self)
+sensor_state_t sensor_disable(intf_handle_t *self)
 {
     if (self == NULL || self->ops == NULL)
     {

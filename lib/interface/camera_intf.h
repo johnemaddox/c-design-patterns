@@ -7,7 +7,7 @@
  *  between physical camera hardware and simulation drivers.
  *
  *  Usage Example:
- *   1. Declare an interface handle: intf_t my_camera;
+ *   1. Declare an interface handle: intf_handle_t my_camera;
  *   2. Instantiate the driver (e.g. HW or SIM):
  *      camera_hw_create(&my_camera);
  *   3. Access operations through safe wrappers:
@@ -48,16 +48,16 @@ typedef struct
 // Camera operations struct
 typedef struct
 {
-    camera_state_t (*init)(intf_t *self);
-    camera_state_t (*capture)(intf_t *self, uint32_t num_of_captures);
-    camera_state_t (*start)(intf_t *self);
-    camera_state_t (*stop)(intf_t *self);
+    camera_state_t (*init)(intf_handle_t *self);
+    camera_state_t (*capture)(intf_handle_t *self, uint32_t num_of_captures);
+    camera_state_t (*start)(intf_handle_t *self);
+    camera_state_t (*stop)(intf_handle_t *self);
 } camera_ops_t;
 
 // Safe interface wrappers to handle null checks centrally
-camera_state_t camera_init(intf_t *self);
-camera_state_t camera_capture(intf_t *self, uint32_t num_of_captures);
-camera_state_t camera_start(intf_t *self);
-camera_state_t camera_stop(intf_t *self);
+camera_state_t camera_init(intf_handle_t *self);
+camera_state_t camera_capture(intf_handle_t *self, uint32_t num_of_captures);
+camera_state_t camera_start(intf_handle_t *self);
+camera_state_t camera_stop(intf_handle_t *self);
 
 #endif // CAMERA_INTF_H
