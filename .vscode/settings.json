@@ -4,7 +4,7 @@
         // Point to merged compile_commands.json in out/ base directory
         "--compile-commands-dir=${workspaceFolder}/out",
         // Query Clang toolchain
-        "--query-driver=/usr/bin/clang",
+        "--query-driver=/usr/bin/gcc,/usr/bin/g++,/usr/local/bin/gcc,/usr/local/bin/g++",
         "--background-index",
         "--clang-tidy",
         "-log=verbose"

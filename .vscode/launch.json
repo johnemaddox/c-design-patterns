@@ -8,7 +8,7 @@
             "name": "LLDB",
             "type": "lldb",
             "request": "launch",
-            "program": "${workspaceFolder}/out/tests/${input:exec}",
+            "program": "${workspaceFolder}/out/bin/${input:exec}",
             "args": [],
             "cwd": "${workspaceFolder}",
             "preLaunchTask": "Build All"

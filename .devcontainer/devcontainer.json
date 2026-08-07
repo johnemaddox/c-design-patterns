@@ -17,9 +17,5 @@
 				"vadimcn.vscode-lldb"
 			]
 		}
-	},
-	"containerEnv": {
-		"CC": "clang",
-		"CXX": "clang++"
 	}
 }

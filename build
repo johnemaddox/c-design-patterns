@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-build_dir="$(pwd)/out"
-lib_dir="lib"
+build_dir="${PWD}/out"
+lib_dir="${PWD}/lib"
 
 usage()
 {
@@ -28,6 +28,7 @@ clean()
 
 make_all()
 {
+    update_vscode_configs
     echo ">> Building all with debug flags <<"
     cmake -G Ninja -S . -B "${build_dir}"
     cmake --build "${build_dir}" -- all
@@ -41,8 +42,9 @@ run_test()
             usage
             exit 1
         fi
+        make_all
         echo ">> Run $1 Test <<"
-        "${build_dir}/tests/$1"
+        "${build_dir}/bin/$1"
     else
         usage
         exit 1
@@ -68,12 +70,9 @@ for p in ['.vscode/launch.json', '.vscode/tasks.json']:
 
 case "$1" in
     "all")
-        update_vscode_configs
         make_all
         ;;
     "test")
-        update_vscode_configs
-        make_all
         run_test "${2-}"
         ;;
     "clean")

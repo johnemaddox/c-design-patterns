@@ -1,15 +1,15 @@
-FROM silkeh/clang:18
+FROM gcc:11
 
 RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
-        clangd \
-        libllvmlibc-18-dev \
         cmake \
         ninja-build \
-        vim \
+        clang-tidy \
+        clangd \
+        lldb \
         git \
-        ssh \
+        vim \
     && rm -rf /var/lib/apt/lists/*
 
 # https://code.visualstudio.com/remote/advancedcontainers/add-nonroot-user
